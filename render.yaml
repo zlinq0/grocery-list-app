@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: grocery-list-app
+    env: node
+    buildCommand: npm install && npm run client-install && npm run build --prefix client
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false

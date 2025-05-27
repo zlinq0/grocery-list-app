@@ -1,11 +1,12 @@
 .App {
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
-  background-image: url('https://images.unsplash.com/photo-1604719312566-8912e9c8a213?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80');
+  background: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   position: relative;
+  overflow-x: hidden;
 }
 
 .App::before {
@@ -15,7 +16,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.9);
+  background: url('https://www.transparenttextures.com/patterns/cubes.png');
+  opacity: 0.4;
   z-index: 0;
 }
 
@@ -24,60 +26,152 @@
   z-index: 1;
 }
 
+/* Add subtle animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
 .app-header {
-  background: linear-gradient(135deg, rgba(106, 17, 203, 0.9) 0%, rgba(37, 117, 252, 0.9) 100%);
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   color: white;
-  padding: 1.5rem 0;
-  margin-bottom: 2rem;
-  border-radius: 0 0 25px 25px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  padding: 1.8rem 0;
+  margin-bottom: 2.5rem;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .app-title {
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 800;
+  letter-spacing: 2px;
   margin: 0;
+  font-size: 2.2rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to right, #ffffff, #e0e0e0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: float 6s ease-in-out infinite;
 }
 
 .card {
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(5px);
-  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.card:hover::before {
+  transform: scaleX(1);
 }
 
 .card-title {
-  font-weight: 600;
-  color: #4a4a4a;
+  font-weight: 700;
+  color: #333;
   border-bottom: 2px solid #f1f1f1;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  position: relative;
+  display: inline-block;
+}
+
+.card-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
 }
 
 .grocery-item {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-left: 4px solid transparent;
-  margin-bottom: 8px;
-  border-radius: 8px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  padding: 15px;
+}
+
+.grocery-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(37, 117, 252, 0.1), rgba(255, 255, 255, 0));
+  z-index: -1;
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
 }
 
 .grocery-item:hover {
-  background-color: #f8f9fa;
+  background-color: #fff;
   border-left: 4px solid #2575fc;
+  transform: translateX(5px);
+  box-shadow: 0 5px 15px rgba(37, 117, 252, 0.2);
+}
+
+.grocery-item:hover::before {
+  transform: translateX(0);
 }
 
 .grocery-item.purchased {
   background-color: #e8f5e9;
   border-left: 4px solid #66bb6a;
+  opacity: 0.85;
+}
+
+.grocery-item.purchased::before {
+  background: linear-gradient(90deg, rgba(102, 187, 106, 0.1), rgba(255, 255, 255, 0));
 }
 
 .grocery-item.purchased .item-name {
@@ -86,13 +180,41 @@
 }
 
 .item-name {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.1rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+  margin-left: 8px;
+}
+
+.item-icon {
+  color: #2575fc;
+  margin-right: 5px;
+}
+
+.item-name-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.grocery-item:hover .item-name {
+  transform: translateX(3px);
+  color: #2575fc;
+}
+
+.grocery-item.purchased .item-name {
+  color: #66bb6a;
 }
 
 .item-details {
   font-size: 0.85rem;
   color: #6c757d;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .action-buttons {
@@ -145,6 +267,51 @@
   align-items: center;
 }
 
+.quantity-unit, .category, .frequency {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(37, 117, 252, 0.05);
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.quantity-unit {
+  background: rgba(102, 187, 106, 0.1);
+}
+
+.category {
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.frequency {
+  background: rgba(156, 39, 176, 0.1);
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  background: linear-gradient(90deg, rgba(106, 17, 203, 0.05), rgba(37, 117, 252, 0.05));
+  border-radius: 12px;
+  border-left: 3px solid #2575fc;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+}
+
+.category-header h5 {
+  margin: 0;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: capitalize;
+}
+
 .category-icon {
   margin-right: 8px;
 }
@@ -183,13 +350,24 @@
   padding: 40px;
 }
 
-.empty-list {
+.empty-list-message {
   text-align: center;
-  padding: 40px;
-  color: #757575;
-  background: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  margin-top: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.empty-list-message h5 {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.empty-list-message p {
+  color: #6c757d;
 }
 
 .empty-list h4 {
@@ -198,33 +376,63 @@
   color: #4a4a4a;
 }
 
+.frequency-filter {
+  margin-bottom: 25px;
+}
+
 .frequency-filter .btn-group {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
   overflow: hidden;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .frequency-filter .btn {
-  padding: 8px 16px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border-width: 1px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-width: 0;
+  border-radius: 50px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.frequency-filter .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .frequency-filter .btn-primary {
   background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 10px rgba(37, 117, 252, 0.3);
+  transform: scale(1.05);
 }
 
 .frequency-filter .btn-outline-primary {
   color: #2575fc;
-  border-color: #e0e0e0;
+  background: transparent;
 }
 
 .frequency-filter .btn-outline-primary:hover {
-  background-color: rgba(37, 117, 252, 0.1);
   color: #2575fc;
-  border-color: #2575fc;
+  background-color: rgba(37, 117, 252, 0.1);
+  transform: translateY(-2px);
+}
+
+.frequency-filter .btn-outline-primary:hover::before {
+  opacity: 0.05;
 }
 
 .frequency-badge .badge {
@@ -248,6 +456,56 @@
   background-color: #6c757d !important;
 }
 
+/* Background Music Styles */
+.background-music-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.music-toggle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, rgba(106, 17, 203, 0.8) 0%, rgba(37, 117, 252, 0.8) 100%);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.music-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(106, 17, 203, 0.9) 0%, rgba(37, 117, 252, 0.9) 100%);
+  color: white;
+}
+
+.music-controls {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.volume-slider {
+  width: 100px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .card {
     margin-bottom: 20px;
@@ -260,5 +518,20 @@
   .frequency-filter .btn {
     padding: 6px 10px;
     font-size: 0.85rem;
+  }
+  
+  .background-music-container {
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .music-controls {
+    padding: 8px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .volume-slider {
+    width: 80px;
   }
 }

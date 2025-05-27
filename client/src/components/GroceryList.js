@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListGroup, Button, Spinner, Badge } from 'react-bootstrap';
+import { ListGroup, Button, Badge, Row, Col, Spinner } from 'react-bootstrap';
 import { 
   FaEdit, 
   FaTrash, 
@@ -15,7 +15,9 @@ import {
   FaCoffee, 
   FaCookie, 
   FaHome, 
-  FaShoppingBasket 
+  FaShoppingBasket, 
+  FaCalendarAlt, 
+  FaTag 
 } from 'react-icons/fa';
 
 const GroceryList = ({ groceries, loading, deleteGroceryItem, editGroceryItem, togglePurchased }) => {
@@ -47,6 +49,19 @@ const GroceryList = ({ groceries, loading, deleteGroceryItem, editGroceryItem, t
     }
   };
 
+  const getFrequencyBadgeColor = (frequency) => {
+    switch(frequency) {
+      case 'daily':
+        return 'info';
+      case 'weekend':
+        return 'warning';
+      case 'monthly':
+        return 'secondary';
+      default:
+        return 'primary';
+    }
+  };
+
   if (loading) {
     return (
       <div className="loading-spinner">
@@ -59,10 +74,15 @@ const GroceryList = ({ groceries, loading, deleteGroceryItem, editGroceryItem, t
 
   if (groceries.length === 0) {
     return (
-      <div className="empty-list">
-        <h4>Your grocery list is empty</h4>
-        <p>Add some items to get started with your shopping</p>
-      </div>
+      <ListGroup>
+        <ListGroup.Item className="empty-list-message">
+          <div className="text-center py-4">
+            <FaShoppingBasket size={40} className="text-muted mb-3" />
+            <h5>Your grocery list is empty</h5>
+            <p className="text-muted">Add some items to get started!</p>
+          </div>
+        </ListGroup.Item>
+      </ListGroup>
     );
   }
 
@@ -94,57 +114,72 @@ const GroceryList = ({ groceries, loading, deleteGroceryItem, editGroceryItem, t
       {sortedCategories.map(category => (
         <div key={category} className="mb-4">
           <div className="category-header">
-            {getCategoryIcon(category)}
-            <span className="text-capitalize">{category}</span>
-            <Badge bg="primary" pill className="ms-2">
+            <h5>{getCategoryIcon(category)} {category}</h5>
+            <Badge bg="primary" pill>
               {groupedGroceries[category].length}
             </Badge>
           </div>
           <ListGroup>
-            {groupedGroceries[category].map(item => (
-              <ListGroup.Item 
-                key={item._id} 
-                className={`grocery-item d-flex justify-content-between align-items-center ${item.purchased ? 'purchased' : ''}`}
-              >
-                <div>
-                  <span className="item-name">{item.name}</span>
-                  <div className="item-details">
-                    {item.quantity} {item.unit}
-                    <span className="frequency-badge ms-2">
-                      {item.frequency === 'daily' && <span className="badge bg-info">Daily</span>}
-                      {item.frequency === 'weekend' && <span className="badge bg-warning">Weekend</span>}
-                      {item.frequency === 'monthly' && <span className="badge bg-secondary">Monthly</span>}
-                    </span>
+          {groupedGroceries[category].map(item => (
+            <ListGroup.Item
+              key={item._id}
+              className={`grocery-item ${item.purchased ? 'purchased' : ''}`}
+            >
+              <Row className="align-items-center">
+                <Col xs={8} md={9}>
+                  <div className="item-content">
+                    <div className="item-name-container">
+                      <FaShoppingBasket className="item-icon" />
+                      <span className="item-name">{item.name}</span>
+                    </div>
+                    <div className="item-details">
+                      <span className="quantity-unit">
+                        <strong>{item.quantity}</strong> {item.unit}
+                      </span>
+                      <span className="category">
+                        <FaTag size={12} className="mr-1" /> {category}
+                      </span>
+                      <span className="frequency">
+                        <FaCalendarAlt size={12} className="mr-1" /> {item.frequency}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="action-buttons">
-                  <Button 
-                    variant={item.purchased ? "outline-success" : "success"} 
-                    className="action-btn"
-                    title={item.purchased ? "Mark as not purchased" : "Mark as purchased"}
-                    onClick={() => togglePurchased(item._id, item.purchased)}
-                  >
-                    {item.purchased ? <FaUndo size={16} /> : <FaCheck size={16} />}
-                  </Button>
-                  <Button 
-                    variant="info" 
-                    className="action-btn"
-                    title="Edit item"
-                    onClick={() => editGroceryItem(item)}
-                  >
-                    <FaEdit size={16} />
-                  </Button>
-                  <Button 
-                    variant="danger" 
-                    className="action-btn"
-                    title="Delete item"
-                    onClick={() => deleteGroceryItem(item._id)}
-                  >
-                    <FaTrash size={16} />
-                  </Button>
-                </div>
-              </ListGroup.Item>
-            ))}
+                </Col>
+                <Col xs={4} md={3}>
+                  <div className="action-buttons">
+                    <Button
+                      variant={item.purchased ? "outline-success" : "success"}
+                      size="sm"
+                      onClick={() => togglePurchased(item._id, item.purchased)}
+                      className="action-btn"
+                      title={item.purchased ? "Mark as not purchased" : "Mark as purchased"}
+                    >
+                      {item.purchased ? <FaUndo /> : <FaCheck />}
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => editGroceryItem(item)}
+                      className="action-btn"
+                      disabled={item.purchased}
+                      title="Edit item"
+                    >
+                      <FaEdit />
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => deleteGroceryItem(item._id)}
+                      className="action-btn"
+                      title="Delete item"
+                    >
+                      <FaTrash />
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </ListGroup.Item>
+          ))}
           </ListGroup>
         </div>
       ))}
